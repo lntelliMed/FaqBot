@@ -1,68 +1,80 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { Button, Form, TextArea } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {withRouter, Link} from 'react-router-dom'
-import {logout} from '../store'
+import {getIntentList, getMessage} from '../store'
 
-/**
- * COMPONENT
- *  The Main component is our 'picture frame' - it displays the navbar and anything
- *  else common to our entire app. The 'picture' inside the frame is the space
- *  rendered out by the component's `children`.
- */
-const Main = (props) => {
-  const {children, handleClick, isLoggedIn} = props
+class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      enteredMessage: ''
+    }
 
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleTextChange(evt) {
+    this.setState({ enteredMessage: evt.target.value });
+  }
+
+  handleSubmit(evt) {
+    evt.preventDefault();
+    const newMessage = evt.target.newMessage.value;
+    this.setState({
+      enteredMessage: ''
+    })
+    console.log('intent before', this.props.intent)
+
+    this.props.getIntent(newMessage)
+    // this.props.getMessage(this.props.intent.value)
+    console.log('intent received',this.props.intent)
+    this.props.getMessage('undefined')
+  }
+
+render() {
+  const { children, getIntent, getMessage, intent } = this.props
   return (
     <div>
-      <h1>BOILERMAKER</h1>
-      <nav>
-        {
-          isLoggedIn
-            ? <div>
-              {/* The navbar will show these links after you log in */}
-              <Link to="/home">Home</Link>
-              <a href="#" onClick={handleClick}>Logout</a>
-            </div>
-            : <div>
-              {/* The navbar will show these links before you log in */}
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Sign Up</Link>
-            </div>
-        }
-      </nav>
-      <hr />
-      {children}
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Group widths='equal'>
+          <Form.Field name='chatWindow' id='form-textarea-control-opinion' control={TextArea} value={this.props.messages} />
+
+        </Form.Group>
+        <Form.Group widths='equal'>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Form.Input onChange={this.handleTextChange} name='newMessage'  placeholder='Type a message..' value={this.state.enteredMessage} error />
+        </Form.Group>
+        <Button type='submit'>Send</Button>
+      </Form>
     </div>
   )
 }
+}
+
 
 /**
  * CONTAINER
  */
 const mapState = (state) => {
   return {
-    isLoggedIn: !!state.user.id
+    intent: state.intent,
+    messages: state.messages.join('\n')
   }
 }
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, ownProps) => {
   return {
-    handleClick () {
-      dispatch(logout())
-    }
+    getIntent(newMessage) {
+      dispatch(getIntentList(newMessage, ownProps));
+    },
+    getMessage(intentValue) {
+      dispatch(getMessage(intentValue, ownProps))
+    },
   }
 }
 
-// The `withRouter` wrapper makes sure that updates are not blocked
-// when the url changes
 export default withRouter(connect(mapState, mapDispatch)(Main))
 
-/**
- * PROP TYPES
- */
-Main.propTypes = {
-  children: PropTypes.object,
-  handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
-}

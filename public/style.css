@@ -1,21 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: sans-serif;
+  padding: 56px;
 }
 
-a {
-  text-decoration: none;
+img {
+  height: 200px;
 }
 
-label {
-  display: block;
+
+ li {
+    list-style-type: none;
 }
 
-nav a {
-  display: inline-block;
-  margin: 1em;
+TextArea {
+  margin-top: 50px;
+  height: 400px;
 }
 
-form div {
-  margin: 1em;
-  display: inline-block;
-}
+
+
+
