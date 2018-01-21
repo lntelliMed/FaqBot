@@ -36,13 +36,15 @@ export function getIntentList(message) {
         //   console.log('No matching intent was found!')
 
         // }
-        const action = getIntentAction(intentObj)
+
+        let theIntent = ''
+        if (!intentObj) {
+          theIntent = 'error'
+        } else {
+          theIntent = intentObj.value
+        }
+        const action = getIntentAction(theIntent)
         dispatch(action);
-        return intentObj;
-      })
-      .then(() => {
-        console.log('ssss', intentObj)
-        getMessage(intentObj.value)
       })
       .catch(console.error);
   }
@@ -50,7 +52,7 @@ export function getIntentList(message) {
 
 
 // Reducer
-export default function reducer(state = {}, action) {
+export default function reducer(state = '', action) {
   switch (action.type) {
     case GET_INTENT:
       return action.intent;

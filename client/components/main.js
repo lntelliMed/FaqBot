@@ -15,6 +15,9 @@ class Main extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+  // Use  props will change hook in case same message entered twice??
+
   handleTextChange(evt) {
     this.setState({ enteredMessage: evt.target.value });
   }
@@ -22,15 +25,23 @@ class Main extends Component {
   handleSubmit(evt) {
     evt.preventDefault();
     const newMessage = evt.target.newMessage.value;
+
+    // console.log('intent before', this.props.intent)
+
+
     this.setState({
       enteredMessage: ''
     })
-    console.log('intent before', this.props.intent)
 
     this.props.getIntent(newMessage)
-    // this.props.getMessage(this.props.intent.value)
-    console.log('intent received',this.props.intent)
-    this.props.getMessage('undefined')
+
+    if (this.props.intent){
+      const newIntent = this.props.intent;
+
+      this.props.getBotReply(newIntent)
+    }
+
+
   }
 
 render() {
@@ -67,12 +78,17 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
+    getBotReply(intentValue) {
+      console.log('intentValue', intentValue)
+      dispatch(getMessage(intentValue, ownProps))
+    }
+    ,
     getIntent(newMessage) {
+      console.log('newMessage', newMessage)
+
       dispatch(getIntentList(newMessage, ownProps));
     },
-    getMessage(intentValue) {
-      dispatch(getMessage(intentValue, ownProps))
-    },
+
   }
 }
 
