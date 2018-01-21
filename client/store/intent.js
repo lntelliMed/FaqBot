@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getMessage } from './messages'
 
 // Action types
 const GET_INTENT = 'GET_INTENT';
@@ -24,19 +23,7 @@ export function getIntentList(message) {
       .then(data => {
         if (data.entities.intent) {
           intentObj = data.entities.intent[0]
-
-          // console.log(intentObj.value, intentObj.confidence)
-          // if (intentObj.value === 'undefined_faq') {
-          //   console.log('So, you are asking about undefined. That is a great question!')
-          // } else if (intentObj.value === 'greeting') {
-          //   console.log('Hello there!')
-          // }
         }
-        // else {
-        //   console.log('No matching intent was found!')
-
-        // }
-
         let theIntent = ''
         if (!intentObj) {
           theIntent = 'error'

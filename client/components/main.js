@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Form, TextArea } from 'semantic-ui-react'
+import { Button, Form, TextArea, Icon } from 'semantic-ui-react'
 import {connect} from 'react-redux'
-import {withRouter, Link} from 'react-router-dom'
-import {getIntentList, getMessage} from '../store'
+import {withRouter} from 'react-router-dom'
+import { getMessage, addMessageAction} from '../store'
 
 class Main extends Component {
   constructor(props) {
@@ -26,28 +26,19 @@ class Main extends Component {
     evt.preventDefault();
     const newMessage = evt.target.newMessage.value;
 
-    // console.log('intent before', this.props.intent)
-
+    this.props.addUserMessage('Anonymos: ' + newMessage)
+    this.props.getBotReply(newMessage)
 
     this.setState({
       enteredMessage: ''
     })
-
-    this.props.getIntent(newMessage)
-
-    if (this.props.intent){
-      const newIntent = this.props.intent;
-
-      this.props.getBotReply(newIntent)
-    }
-
-
   }
 
 render() {
-  const { children, getIntent, getMessage, intent } = this.props
+  const { children, getMessage } = this.props
   return (
     <div>
+      <h2>Fullstack FAQ Bot</h2>
       <Form onSubmit={this.handleSubmit}>
         <Form.Group widths='equal'>
           <Form.Field name='chatWindow' id='form-textarea-control-opinion' control={TextArea} value={this.props.messages} />
@@ -56,7 +47,8 @@ render() {
         <Form.Group widths='equal'>
         </Form.Group>
         <Form.Group widths='equal'>
-          <Form.Input onChange={this.handleTextChange} name='newMessage'  placeholder='Type a message..' value={this.state.enteredMessage} error />
+          <Form.Input onChange={this.handleTextChange} name='newMessage' id="transcript" placeholder='Type a message..' value={this.state.enteredMessage} error />
+          <Icon name='microphone' inveted color='teal' circular onClick={startDictation} size='large' />
         </Form.Group>
         <Button type='submit'>Send</Button>
       </Form>
@@ -66,9 +58,33 @@ render() {
 }
 
 
-/**
- * CONTAINER
- */
+function startDictation() {
+
+  if (window.hasOwnProperty('webkitSpeechRecognition')) {
+
+    var recognition = new webkitSpeechRecognition();
+
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.lang = "en-US";
+    recognition.start();
+
+    recognition.onresult = function (e) {
+      document.getElementById('transcript').value
+        = e.results[0][0].transcript;
+      recognition.stop();
+      document.getElementById('labnol').submit();
+    };
+
+    recognition.onerror = function (e) {
+      recognition.stop();
+    }
+
+  }
+}
+
+
 const mapState = (state) => {
   return {
     intent: state.intent,
@@ -78,17 +94,12 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    getBotReply(intentValue) {
-      console.log('intentValue', intentValue)
-      dispatch(getMessage(intentValue, ownProps))
-    }
-    ,
-    getIntent(newMessage) {
-      console.log('newMessage', newMessage)
-
-      dispatch(getIntentList(newMessage, ownProps));
+    getBotReply(message) {
+      dispatch(getMessage(message, ownProps))
     },
-
+    addUserMessage(message) {
+      dispatch(addMessageAction(message, ownProps))
+    }
   }
 }
 

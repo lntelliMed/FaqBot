@@ -10,10 +10,10 @@ async function seed () {
   const messages = await Promise.all([
     Message.create({ intent: 'greeting', reply: ['Hey there!', 'How is it going?'] }),
     Message.create({ intent: 'error', reply: ['Sorry, did not understand what you mean!', 'Not sure I understood you correctly'] }),
-    Message.create({ intent: 'undefined', reply: ['So, you are asking about undefine. That is a fantastic question']}),
+    Message.create({ intent: 'undefined_faq', reply: ['So, you are asking about undefined. That is a fantastic question']}),
   ])
 
-  console.log(`seeded ${messages.length} users`)
+  console.log(`seeded ${messages.length} rows`)
   console.log(`seeded successfully`)
 }
 
