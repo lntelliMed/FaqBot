@@ -38,9 +38,9 @@ render() {
   const { children, getMessage } = this.props
   return (
     <div>
-      <h2>Fullstack FAQ Bot</h2>
+      <div className='header-logo'><img src='./fa-logo@2x.png'/> <h1> FAQ Bot</h1></div>
       <Form onSubmit={this.handleSubmit}>
-        <Form.Group widths='equal'>
+        <Form.Group className='chat-window' widths='equal'>
           <Form.Field name='chatWindow' id='form-textarea-control-opinion' control={TextArea} value={this.props.messages} />
 
         </Form.Group>
@@ -48,7 +48,7 @@ render() {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Input onChange={this.handleTextChange} name='newMessage' id="transcript" placeholder='Type a message..' value={this.state.enteredMessage} error />
-          <Icon name='microphone' inveted color='teal' circular onClick={startDictation} size='large' />
+          <Icon name='microphone'  color='teal' circular onClick={startDictation} size='large' />
         </Form.Group>
         <Button type='submit'>Send</Button>
       </Form>
@@ -58,11 +58,12 @@ render() {
 }
 
 
+// https://www.labnol.org/software/add-speech-recognition-to-website/19989/
 function startDictation() {
 
   if (window.hasOwnProperty('webkitSpeechRecognition')) {
 
-    var recognition = new webkitSpeechRecognition();
+    const recognition = new webkitSpeechRecognition();
 
     recognition.continuous = false;
     recognition.interimResults = false;

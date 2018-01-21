@@ -1,5 +1,3 @@
-// store/products.js
-
 import axios from 'axios';
 
 // Action types

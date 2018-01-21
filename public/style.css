@@ -7,7 +7,9 @@ body {
 }
 
 img {
-  height: 200px;
+  height: 100px;
+  width: 300px;
+
 }
 
 
@@ -15,9 +17,20 @@ img {
     list-style-type: none;
 }
 
-TextArea {
+.chat-window {
+    background: red;
+}
+form textarea {
   margin-top: 50px;
   height: 400px;
+}
+
+.header-logo {
+  display: flex;
+}
+
+.header-logo img {
+  justify-content: flex-start;
 }
 
 

@@ -1,1 +1,1 @@
-# Fullstack Chat Bot
+# Fullstack FAQ Chat Bot
