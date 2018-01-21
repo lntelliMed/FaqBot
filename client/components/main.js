@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, TextArea, Icon } from 'semantic-ui-react'
+import { Button, Form, TextArea, Icon, Image } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import { getMessage, addMessageAction} from '../store'
@@ -16,7 +16,8 @@ class Main extends Component {
   }
 
 
-  // Use  props will change hook in case same message entered twice??
+  // TO-DO: Check if there is a need for  props will change hook in case same message entered twice
+  // (no state change?)
 
   handleTextChange(evt) {
     this.setState({ enteredMessage: evt.target.value });
@@ -38,7 +39,7 @@ render() {
   const { children, getMessage } = this.props
   return (
     <div>
-      <div className='header-logo'><img src='./fa-logo@2x.png'/> <h1> FAQ Bot</h1></div>
+      <div className='header-logo'><Image src='./fa-logo@2x.png' /> <h1> FAQ Bot</h1><Image className='bot-picture' circular src='./omri.jpg' /></div>
       <Form onSubmit={this.handleSubmit}>
         <Form.Group className='chat-window' widths='equal'>
           <Form.Field name='chatWindow' id='form-textarea-control-opinion' control={TextArea} value={this.props.messages} />
