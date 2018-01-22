@@ -80,9 +80,9 @@ export default function reducer(state = [], action) {
     case GET_MESSAGES:
       return state;
     case GET_MESSAGE:
-      return [...state, new Date().toLocaleTimeString() + ' : ' + action.message]
+      return [...state, '[' + new Date().toLocaleTimeString() + '] : ' + action.message]
     case ADD_MESSAGE:
-      return [...state, new Date().toLocaleTimeString() + ' : ' + action.message]
+      return [...state, '[' + new Date().toLocaleTimeString() + '] : ' + action.message]
     default:
       return state;
   }
