@@ -43,7 +43,8 @@ export function getMessage(message) {
       .then(res => res.data)
       .then(message => {
         dispatch(getMessageAction(message))
-        window.speechSynthesis.speak(new SpeechSynthesisUtterance(message.split(':')[1]));
+        // window.speechSynthesis.speak(new SpeechSynthesisUtterance(message.split(':')[1]));
+        window.speechSynthesis.speak(new SpeechSynthesisUtterance(message));
       })
       .catch(console.error)
   }
@@ -79,9 +80,9 @@ export default function reducer(state = [], action) {
     case GET_MESSAGES:
       return state;
     case GET_MESSAGE:
-      return [...state, action.message]
+      return [...state, new Date().toLocaleTimeString() + ' : ' + action.message]
     case ADD_MESSAGE:
-      return [...state, action.message]
+      return [...state, new Date().toLocaleTimeString() + ' : ' + action.message]
     default:
       return state;
   }

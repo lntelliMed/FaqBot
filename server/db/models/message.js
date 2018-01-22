@@ -9,7 +9,8 @@ const Message = db.define('message', {
     type: Sequelize.ARRAY(Sequelize.TEXT),
     get() {
       const randomIndex = Math.floor(Math.random() * this.getDataValue('reply').length)
-      return '\tFaqBot: ' + this.getDataValue('reply')[randomIndex]
+      // return '\tFaqBot: ' + this.getDataValue('reply')[randomIndex]
+      return this.getDataValue('reply')[randomIndex]
     }
   }
 })

@@ -7,15 +7,15 @@ router.get('/:intent', (req, res, next) => {
     where: {intent: req.params.intent}
   })
     .then(message => {
-      // let botReply = ''
-      // if (message)
-      // {
-      //   botReply = message.reply
-      // } else {
-      //   botReply = 'Sorry, did not understand what you mean!'
-      // }
-      // return res.json(botReply)
-      return res.json(message.reply)
+      let botReply = ''
+      if (message)
+      {
+        botReply = message.reply
+      } else {
+        botReply = 'Sorry, did not understand what you mean!'
+      }
+      return res.json(botReply)
+      // return res.json(message.reply)
     })
     .catch(next)
 })

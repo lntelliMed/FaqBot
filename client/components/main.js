@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, TextArea, Icon, Image } from 'semantic-ui-react'
+// import ChatBubble from 'react-chat-bubble'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import { getMessage, addMessageAction} from '../store'
@@ -16,6 +17,8 @@ class Main extends Component {
   }
 
 
+
+
   // TO-DO: Check if there is a need for  props will change hook in case same message entered twice
   // (no state change?)
 
@@ -27,7 +30,8 @@ class Main extends Component {
     evt.preventDefault();
     const newMessage = evt.target.newMessage.value;
 
-    this.props.addUserMessage('Anonymos: ' + newMessage)
+    // this.props.addUserMessage('Anonymos: ' + newMessage)
+    this.props.addUserMessage(newMessage)
     this.props.getBotReply(newMessage)
 
     this.setState({
@@ -35,18 +39,29 @@ class Main extends Component {
     })
   }
 
+
 render() {
   const { children, getMessage } = this.props
   return (
     <div>
-      <div className='header-logo'><Image src='./fa-logo@2x.png' /> <h1> FAQ Bot</h1><Image className='bot-picture' circular src='./omri.jpg' /></div>
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group className='chat-window' widths='equal'>
-          <Form.Field name='chatWindow' id='form-textarea-control-opinion' control={TextArea} value={this.props.messages} />
+      <div className='header-logo'>
+        <Image className='header-fs-picture' src='./fa-logo@2x.png' />
+        <h1> FAQ Bot</h1>
+        <Image className='header-bot-picture' circular src='./omri.jpg' />
+      </div>
 
-        </Form.Group>
-        <Form.Group widths='equal'>
-        </Form.Group>
+      <Form onSubmit={this.handleSubmit}>
+        <ul className='chat-window'>
+          {this.props.messages.map((message, index) => {
+            return (
+              <div  key={index}>
+                <Image className='chat-picture' bordered circular src={index % 2 === 0 ? './guest.png' : './bot.png'} />
+                {/* <div className='chat-bubble' > {message} </div> */}
+                <Form.Input className='chat-bubble' placeholder='Type a message..' value={message} />
+              </div>
+            )
+          })}
+        </ul>
         <Form.Group widths='equal'>
           <Form.Input onChange={this.handleTextChange} name='newMessage' id="transcript" placeholder='Type a message..' value={this.state.enteredMessage} error />
           <Icon name='microphone'  color='teal' circular onClick={startDictation} size='large' />
@@ -90,7 +105,8 @@ function startDictation() {
 const mapState = (state) => {
   return {
     intent: state.intent,
-    messages: state.messages.join('\n')
+    // messages: state.messages.join('\n')
+    messages: state.messages
   }
 }
 
